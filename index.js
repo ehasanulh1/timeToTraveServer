@@ -51,22 +51,49 @@ async function run() {
             const query = {};
             const cursor = reviewsCollection.find(query);
             const storedReviews = await cursor.toArray();
-            if(req.query.email){
+            if (req.query.email) {
                 const queryEmail = req.query.email;
-                const myReview = storedReviews.filter(review=>review.email === queryEmail)
+                const myReviews = storedReviews.filter(review => review.email === queryEmail)
+                res.send(myReviews)
+            }
 
+            if (id) {
+                const reviews = storedReviews.filter(review => review.service_id === id)
+                res.send(reviews);
+            }
 
-                console.log(myReview)
-            }            
-            const reviews = storedReviews.filter(review=> review.service_id === id)
-            console.log(reviews)
-            res.send(reviews);
         })
 
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewsCollection.insertOne(review);
             res.send(result);
+        });
+
+        app.put('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const review = req.body;
+            console.log(review)
+            const options = { upsert: true };
+            const updateReview = {
+                $set: {
+                    rating: review.rating,
+                    message: review.message
+                }
+            }
+            const result = await reviewsCollection.updateOne(filter, updateReview, options);
+            res.send(result)
+            console.log(updateReview)
+
+        })
+
+        app.delete('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await reviewsCollection.deleteOne(query)
+            console.log(result);
+            res.send(result)
         });
     }
     finally { }
