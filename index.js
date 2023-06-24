@@ -64,11 +64,20 @@ async function run() {
 
         })
 
+        app.post('/destination', async (req, res) => {
+            const destination = req.body;
+            console.log(destination)
+            const result = await destinationCollection.insertOne(destination);
+            res.send(result);
+        });
+
+
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewsCollection.insertOne(review);
             res.send(result);
         });
+
 
         app.put('/reviews/:id', async (req, res) => {
             const id = req.params.id;
