@@ -51,6 +51,13 @@ async function run() {
             const query = {};
             const cursor = reviewsCollection.find(query);
             const storedReviews = await cursor.toArray();
+            if(req.query.email){
+                const queryEmail = req.query.email;
+                const myReview = storedReviews.filter(review=>review.email === queryEmail)
+
+
+                console.log(myReview)
+            }            
             const reviews = storedReviews.filter(review=> review.service_id === id)
             console.log(reviews)
             res.send(reviews);
