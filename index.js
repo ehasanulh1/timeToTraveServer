@@ -83,7 +83,6 @@ async function run() {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) };
             const review = req.body;
-            console.log(review)
             const options = { upsert: true };
             const updateReview = {
                 $set: {
@@ -93,9 +92,7 @@ async function run() {
             }
             const result = await reviewsCollection.updateOne(filter, updateReview, options);
             res.send(result)
-            console.log(updateReview)
-
-        })
+        });
 
         app.delete('/reviews/:id', async (req, res) => {
             const id = req.params.id;
