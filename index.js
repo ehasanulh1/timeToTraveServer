@@ -25,6 +25,13 @@ async function run() {
         const destinationCollection = client.db('timeToTravel').collection('destination');
         const reviewsCollection = client.db('timeToTravel').collection('reviews')
 
+        app.post('/jwt', (req, res)=>{
+            const user = req.body;
+            console.log(user)
+            const token = jwt.sign(user.process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'})
+            res.send({token})
+        })
+
 
         app.get('/destinations', async (req, res) => {
             const query = {};
