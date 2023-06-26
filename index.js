@@ -91,7 +91,6 @@ async function run() {
 
         app.get('/reviews/:id', async (req, res) => {
             const id = req.params.id;
-            console.log(id)
             const query = {};
             const cursor = reviewsCollection.find(query);
             const storedReviews = await cursor.toArray();
@@ -102,7 +101,6 @@ async function run() {
 
         app.post('/destination', async (req, res) => {
             const destination = req.body;
-            console.log(destination)
             const result = await destinationCollection.insertOne(destination);
             res.send(result);
         });
